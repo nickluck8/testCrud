@@ -2,9 +2,12 @@ package com.simpleRest.controller;
 
 import com.simpleRest.model.dto.UserDto;
 import com.simpleRest.model.entity.User;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 import com.simpleRest.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -31,12 +34,12 @@ public class UserController {
     }
 
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.PATCH)
-    public User editUser(Long id, UserDto userDto) {
+    public User editUser(@PathVariable("id") Long id, UserDto userDto) {
         return userService.editUser(id, userDto);
     }
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
-    public User deleteUser(@RequestParam("id") Long id) {
+    public User deleteUser(@PathVariable("id") Long id) {
         return userService.deleteUser(id);
     }
 }

@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User editUser(Long id, UserDto userDto) {
-        User user = userRepository.getOne(id);
+        User user = userRepository.findUserById(id);
         Optional.ofNullable(userDto.getFirstName()).ifPresent(user::setFirstName);
         Optional.ofNullable(userDto.getSecondName()).ifPresent(user::setSecondName);
         Optional.ofNullable(userDto.getRole()).ifPresent(user::setRole);

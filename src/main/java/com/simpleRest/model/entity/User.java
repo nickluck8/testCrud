@@ -1,78 +1,73 @@
 package com.simpleRest.model.entity;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.simpleRest.model.enums.Role;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Collection;
 
 @Entity
-@Table(name = "users")
-public class User {
+@Table(name = "USERS", uniqueConstraints = { @UniqueConstraint(columnNames = { "USER_NAME" }) })
+@Getter
+@Setter
+@EqualsAndHashCode(of = "id")
+public class User implements UserDetails, Serializable {
+
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
     @JsonIgnore
     private Long id;
 
-    @Column(name = "first_name", nullable = false)
-    private String firstName;
-
-    @Column(name = "last_name", nullable = false)
-    private String secondName;
-
-    @Column(name = "username", nullable = false)
+    @Column(name = "USER_NAME")
     private String username;
 
-    @Column(name = "role")
-    private Role role;
+    @Column(name = "PASSWORD")
+    @JsonIgnore
+    private String password;
+
+    @Column(name = "ACCOUNT_EXPIRED")
+    private boolean accountExpired;
+
+    @Column(name = "ACCOUNT_LOCKED")
+    private boolean accountLocked;
+
+    @Column(name = "CREDENTIALS_EXPIRED")
+    private boolean credentialsExpired;
+
+    @Column(name = "ENABLED")
+    private boolean enabled;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "USERS_AUTHORITIES", joinColumns = @JoinColumn(name = "USER_ID", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "AUTHORITY_ID", referencedColumnName = "ID"))
+    @OrderBy
+    @JsonIgnore
+    private Collection<Authority> authorities;
 
     public User() {
     }
 
-    public User(String firstName, String secondName, String username, Role role) {
-        this.firstName = firstName;
-        this.secondName = secondName;
+    public User(String username, String password) {
         this.username = username;
-        this.role = role;
+        this.password = password;
     }
 
-    public Long getId() {
-        return id;
+    @Override
+    public boolean isAccountNonExpired() {
+        return !isAccountExpired();
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    @Override
+    public boolean isAccountNonLocked() {
+        return !isAccountLocked();
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getSecondName() {
-        return secondName;
-    }
-
-    public void setSecondName(String secondName) {
-        this.secondName = secondName;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return !isCredentialsExpired();
     }
 }

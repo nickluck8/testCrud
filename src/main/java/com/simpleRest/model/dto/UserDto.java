@@ -1,53 +1,35 @@
 package com.simpleRest.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.simpleRest.model.enums.Role;
 
 public class UserDto {
-    @JsonProperty("firstName")
-    private String firstName;
+    @JsonProperty("username")
+    private String username;
 
-    @JsonProperty("secondName")
-    private String secondName;
-
-    @JsonProperty("userName")
-    private String userName;
-
-    @JsonProperty("role")
-    private Role role;
+    @JsonProperty("password")
+    private String password;
 
     public UserDto() {
     }
 
-    public String getFirstName() {
-        return firstName;
+    public UserDto(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public String getUsername() {
+        return username;
     }
 
-    public String getSecondName() {
-        return secondName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public void setSecondName(String secondName) {
-        this.secondName = secondName;
+    public String getPassword() {
+        return password;
     }
 
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

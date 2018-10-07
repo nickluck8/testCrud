@@ -6,6 +6,9 @@ import com.simpleRest.repository.UserRepository;
 import com.simpleRest.service.UserService;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
@@ -53,5 +56,12 @@ public class UserServiceImpl implements UserService {
         Optional.ofNullable(userDto.getPassword()).ifPresent(user::setPassword);
         userRepository.save(user);
         return user;
+    }
+
+    @Override
+    public PageImpl<User> findPaginated(Integer page, Integer size) {
+        List <User> users = userRepository.findAll();
+        Pageable pageable = new PageRequest(page, size);
+        return new PageImpl<>(users, pageable, users.size());
     }
 }
